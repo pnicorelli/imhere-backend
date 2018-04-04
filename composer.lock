@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "993664f281caa12a512eae50833ba506",
+    "content-hash": "7bfb0899d269499340b7afb79e83d727",
     "packages": [
         {
             "name": "dflydev/doctrine-orm-service-provider",
@@ -3287,6 +3287,8 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "ext-pdo_sqlite": "*"
+    },
     "platform-dev": []
 }
