@@ -1,0 +1,8 @@
+root:
+  path: /
+  methods: ['GET']
+  defaults: { _controller: 'ImHere\Routes\Root::root' }
+
+v1endpoints:
+  prefix: /v1
+  resource: endpoints_V1.yml

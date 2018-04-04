@@ -1,0 +1,4 @@
+login:
+  path: /login/{email}
+  methods: ['POST']
+  defaults: { _controller: 'ImHere\Routes\V1\Login::login' }
