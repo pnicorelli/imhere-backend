@@ -1,5 +1,7 @@
 # ImHere
 
+[![Build Status](https://travis-ci.org/pnicorelli/imhere-backend.svg?branch=master)](https://travis-ci.org/pnicorelli/imhere-backend)
+
 Just play around
 
 ## Config
