@@ -2,3 +2,11 @@ login:
   path: /login/{email}
   methods: ['POST']
   defaults: { _controller: 'ImHere\Routes\V1\Login::login' }
+profile:
+  path: /profile
+  methods: ['GET']
+  defaults: { _controller: 'ImHere\Routes\V1\Profile::getProfile' }
+checkin:
+  path: /checkin
+  methods: ['POST']
+  defaults: { _controller: 'ImHere\Routes\V1\Badger::checkin' }

@@ -2,7 +2,7 @@
 
 namespace ImHere;
 
-use Symfony\Component\HttpFoundation\Request ;
+use Symfony\Component\HttpFoundation\Request as Request;
 use Symfony\Component\HttpFoundation\JsonResponse ;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
@@ -18,19 +18,34 @@ Class App
     {
         $app = new Application();
         $app['debug'] = true;
+        self::initDB($app);
+        self::initRoutes($app);
         $app->register( new Services\MailTransport() );
-        self::registerDB($app);
-        self::registerRoutes($app);
+        $app->register( new Services\Authentication() );
         return $app;
     }
 
-    private static function registerRoutes($app)
-    {
 
+    private static function initRoutes($app)
+    {
+        /*
+         * Before each route
+         */
+        $app->before(function (Request $request, Application $app) {
+          $token = $request->headers->get('X-TOKEN');
+          $app['app.token'] =  $token;
+        });
+
+        /*
+         * On Error
+         */
         $app->error(function (\Exception $e, Request $request, $code) {
             switch ($code) {
                 case 404:
                     $message = 'resource not found.';
+                    break;
+                case 403:
+                    $message = 'user only resource';
                     break;
                 default:
                     $message = $e->getMessage(); //'Something went terribly wrong.';
@@ -42,6 +57,9 @@ Class App
                 ]);
         });
 
+        /*
+         * Load routes fron configuration
+         */
         $app['routes'] = $app->extend('routes', function (RouteCollection $routes, Application $app) {
             $loader     = new YamlFileLoader(new FileLocator(__DIR__ . '/../config'));
             $collection = $loader->load('endpoints.yml');
@@ -51,7 +69,10 @@ Class App
         });
     }
 
-    private static function registerDB(Application $app){
+    /*
+     * Initialize Doctrine
+     */
+    private static function initDB(Application $app){
         $dsp = [
           'db.options' => [
             'driver' => 'pdo_sqlite',
@@ -65,6 +86,7 @@ Class App
         $app->register(new DoctrineServiceProvider, $dsp);
 
         $app->register(new DoctrineOrmServiceProvider, array(
+            'orm.proxies_dir' => 'db/proxies/',
             'orm.em.options' => array(
                 'mappings' => array(
                     array(

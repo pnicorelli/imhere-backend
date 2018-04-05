@@ -40,11 +40,16 @@ class User
         return $this->id;
     }
 
-
     public function getEmail()
     {
         return $this->email;
     }
+
+    public function getDomain()
+    {
+        return $this->domain;
+    }
+
 
 
     public function setEmail($email)

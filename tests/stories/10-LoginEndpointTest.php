@@ -10,10 +10,9 @@ class LoginEndpointsTest extends WebTestCase
     {
         $app = ImHere\App::App();
         $em = $app['orm.em'];
-        $serviceA = $this->getMockBuilder('Pimple\ServiceProviderInterface')
-                          ->disableOriginalConstructor()
+        $smtpMock = $this->getMockBuilder('ImHere\Services\Mail\GmailSmtpWrapper')
                           ->getMock();
-        $app['mail.transport'] = $serviceA;
+        $app['mail.transport'] = $smtpMock;
         $tool = new \Doctrine\ORM\Tools\SchemaTool($em);
         $classes = array(
           $em->getClassMetadata('ImHere\Entities\User'),

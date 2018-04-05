@@ -27,6 +27,7 @@
     "scripts": {
       "compile": [
         "chmod 777 db",
+        "chmod 777 db/proxies",
         "chmod 666 db/database.db"
       ]
     }
