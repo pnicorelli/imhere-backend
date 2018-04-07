@@ -45,7 +45,6 @@ class Timetable
 
     public function checkIn(){
         $now = new \DateTime('now');
-        // $this->checkInAlreadyMade($now);
         $this->checkin = $now;
     }
 

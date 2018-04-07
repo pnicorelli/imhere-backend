@@ -10,3 +10,11 @@ checkin:
   path: /checkin
   methods: ['POST']
   defaults: { _controller: 'ImHere\Routes\V1\Badger::checkin' }
+checkout:
+  path: /checkout
+  methods: ['POST']
+  defaults: { _controller: 'ImHere\Routes\V1\Badger::checkout' }
+who:
+  path: /who
+  methods: ['GET']
+  defaults: { _controller: 'ImHere\Routes\V1\Watcher::whoIsOnline' }
