@@ -42,4 +42,51 @@ class Watcher
             ], $status=200);
     }
 
+    /*
+     * Create a montly report by domain
+     * Only full checkIn / checkOut are counted
+     *
+     *  - yearmonth: YYYY-MM, default current month
+     */
+    public function reportMontly(Application $app, $yearmonth){
+            $user =  $app['app.user'];
+            if( !$user ){
+              $app->abort(403);
+            }
+            $yearmonth = preg_match('/^(20)\d{2}-(0?[1-9]|1[012])$/', $yearmonth) ? $yearmonth :  date('Y-m');
+
+            $firstDayOfMonth = new \DateTime($yearmonth.'-01');
+            $firstDayOfMonth->setTime(0,0,0);
+            $lastDayOfMonth = new \DateTime($yearmonth.'-01');
+            $lastDayOfMonth->modify('last day of this month');
+            $lastDayOfMonth->setTime(23,59,59);
+
+            $em = $app['orm.em'];
+            $res = $em->createQueryBuilder()
+                    ->select('u.email, t.id')
+                    ->from('ImHere\Entities\Timetable', 't')
+                    ->innerJoin('t.user', 'u', Expr\Join::WITH, 'u.id = t.user')
+                    ->andWhere('t.checkin BETWEEN :in AND :out')
+                    ->andWhere('t.checkout IS NOT NULL')
+                    ->andWhere('u.domain = :domain')
+                    ->setParameter('in', $firstDayOfMonth)
+                    ->setParameter('out', $lastDayOfMonth)
+                    ->setParameter('domain', $user->getDomain())
+                    ->getQuery()
+                    ->execute();
+            $data = [];
+            foreach ($res as $key => $value) {
+              $tt = $em->find('\ImHere\Entities\Timetable', $value['id']);
+              $data[$value['email']][] = [
+                'checkin' => $tt->getCheckIn(),
+                'checkout'=> $tt->getCheckOut(),
+                'hours'   => $tt->totalTime()
+              ];
+            }
+
+            return new JsonResponse([
+              'month' => $yearmonth,
+              'report' => $data
+            ], $status=200);
+    }
 }

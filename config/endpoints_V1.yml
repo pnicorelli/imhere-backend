@@ -1,20 +1,25 @@
 login:
   path: /login/{email}
   methods: ['POST']
-  defaults: { _controller: 'ImHere\Routes\V1\Login::login' }
+  controller: ImHere\Routes\V1\Login::login
 profile:
   path: /profile
   methods: ['GET']
-  defaults: { _controller: 'ImHere\Routes\V1\Profile::getProfile' }
+  controller: ImHere\Routes\V1\Profile::getProfile
 checkin:
   path: /checkin
   methods: ['POST']
-  defaults: { _controller: 'ImHere\Routes\V1\Badger::checkin' }
+  controller: ImHere\Routes\V1\Badger::checkin
 checkout:
   path: /checkout
   methods: ['POST']
-  defaults: { _controller: 'ImHere\Routes\V1\Badger::checkout' }
+  controller: ImHere\Routes\V1\Badger::checkout
 who:
   path: /who
   methods: ['GET']
-  defaults: { _controller: 'ImHere\Routes\V1\Watcher::whoIsOnline' }
+  controller: ImHere\Routes\V1\Watcher::whoIsOnline
+reportPerMonth:
+  path: /report/montly/{yearmonth}
+  methods: ['GET']
+  controller: ImHere\Routes\V1\Watcher::reportMontly
+  defaults: { yearmonth: none }

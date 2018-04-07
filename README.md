@@ -25,3 +25,35 @@ After structure updates, for sync tables, run
 ```shell
 ./vendor/bin/doctrine orm:schema-tool:update --dump-sql --force
 ```
+
+## APIs
+
+All the endpoint reply in Json.
+
+Auth is performed by a token in headers
+**X-TOKEN: thisisthetoken**
+
+
+`POST /v1/login/{email}`
+
+Make a login. A mail is sent to *{email}* with the access token
+
+`GET /v1/profile` (Auth only)
+
+Get the user profile.
+
+`POST /v1/checkin`
+
+Make a checkIn
+
+`POST /v1/checkout` (Auth only)
+
+Make a checkOut
+
+`GET /v1/who` (Auth only)
+
+Get the people are currently at work
+
+`GET /v1/report/montly/{yearmonth}` (Auth only)
+
+Get the report for the *yearmonth*, use `current` to retrieve data for the current month.

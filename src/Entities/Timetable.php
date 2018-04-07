@@ -43,13 +43,12 @@ class Timetable
       $this->user = $user;
     }
 
-    public function checkIn(){
-        $now = new \DateTime('now');
-        $this->checkin = $now;
+    public function checkIn( $datetime = 'now' ){
+        $this->checkin = new \DateTime($datetime);
     }
 
-    public function checkOut(){
-        $this->checkout = new \DateTime('now');
+    public function checkOut( $datetime = 'now' ){
+        $this->checkout = new \DateTime($datetime);
     }
 
     public function getCheckIn(){
@@ -57,7 +56,14 @@ class Timetable
     }
 
     public function getCheckOut(){
-        return  $this->checkout->format('Y-m-d H:i:s');
+        return  (is_null($this->checkout)) ? null : $this->checkout->format('Y-m-d H:i:s');
     }
 
+    public function totalTime(){
+      $difference = 0;
+      if(  !is_null($this->checkout) ){
+        $difference = $this->checkout->diff( $this->checkin )->format('%h');
+      }
+      return $difference;
+    }
 }
