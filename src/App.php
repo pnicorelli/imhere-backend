@@ -3,6 +3,7 @@
 namespace ImHere;
 
 use Symfony\Component\HttpFoundation\Request as Request;
+use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\HttpFoundation\JsonResponse ;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
@@ -35,6 +36,22 @@ Class App
           $token = $request->headers->get('X-TOKEN');
           $app['app.token'] =  $token;
         });
+
+	/*
+	 * After each route
+	 */
+	$app->after(function (Request $request, Response $response) {
+		//Enable CORS
+		$response->headers->set('Access-Control-Allow-Origin', '*');
+		$response->headers->set('Access-Control-Allow-Headers', 'X-TOKEN');
+	});
+
+	/*
+	 * Preflight call
+	 */
+    	$app->options("{anything}", function () {
+	    return new \Symfony\Component\HttpFoundation\JsonResponse(null, 204);
+	})->assert("anything", ".*");
 
         /*
          * On Error

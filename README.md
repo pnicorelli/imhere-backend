@@ -4,6 +4,12 @@
 
 Just play around
 
+A simple clock card machine in a Two-tier webbased software
+
+Backend: [https://github.com/pnicorelli/imhere-backend](https://github.com/pnicorelli/imhere-backend)
+
+Frontend: [https://github.com/pnicorelli/imhere-frontend](https://github.com/pnicorelli/imhere-frontend)
+
 ## Config
 
 env variables
