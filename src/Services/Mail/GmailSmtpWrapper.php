@@ -38,7 +38,7 @@ class GmailSmtpWrapper implements MailInterface
 
     $mailer = new \Swift_Mailer($transport);
     $message = (new \Swift_Message($this->subject))
-        ->setFrom(array('p.nicorelli@gmail.com' => '[ImHere]'))
+        ->setFrom(array($username => '[ImHere]'))
         ->setTo($this->to)
         ->setBody($this->body);
     $message->setContentType('text/html');

@@ -28,7 +28,9 @@ class Badger
                     ->select('count(t.id)')
                     ->andWhere('t.checkin > :current')
                     ->andWhere('t.checkout IS NULL')
+                    ->andWhere('t.user = :userId')
                     ->setParameter('current', $midnight)
+                    ->setParameter('userId', $user->getId())                    
                     ->getQuery()
                     ->execute();
 

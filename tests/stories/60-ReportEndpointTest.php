@@ -100,7 +100,7 @@ class ReportEndpointsTest extends WebTestCase
         $client = static::createClient();
         $client->request(
           'GET',
-          '/v1/report/montly/current',
+          '/v1/report/monthly/current',
           [],
           [],
           ['HTTP_X-TOKEN' => 'notareallygoodone']);
@@ -113,7 +113,7 @@ class ReportEndpointsTest extends WebTestCase
       $client = static::createClient();
       $client->request(
         'GET',
-        '/v1/report/montly/current',
+        '/v1/report/monthly/current',
         [],
         [],
         ['HTTP_X-TOKEN' => $this->session->getToken()]);
@@ -126,7 +126,7 @@ class ReportEndpointsTest extends WebTestCase
       $client = static::createClient();
       $client->request(
         'GET',
-        '/v1/report/montly/justnoise',
+        '/v1/report/monthly/justnoise',
         [],
         [],
         ['HTTP_X-TOKEN' => $this->session->getToken()]);
@@ -142,7 +142,7 @@ class ReportEndpointsTest extends WebTestCase
       $client = static::createClient();
       $client->request(
         'GET',
-        '/v1/report/montly/'.date('Y').'-03',
+        '/v1/report/monthly/'.date('Y').'-03',
         [],
         [],
         ['HTTP_X-TOKEN' => $this->session->getToken()]);
@@ -151,10 +151,10 @@ class ReportEndpointsTest extends WebTestCase
       $content = json_decode($response->getContent(), true);
       $this->assertArrayHasKey('month', $content);
       $this->assertEquals( date('Y').'-03', $content['month'] );
-      $this->assertArrayHasKey('report', $content);
-      $this->assertEquals( $this->fakePeople , count($content['report']) );
+      $this->assertArrayHasKey('reports', $content);
+      $this->assertEquals( $this->fakePeople , count($content['reports']) );
       $acc = 0;
-      foreach ($content['report'] as $key => $value) {
+      foreach ($content['reports'] as $key => $value) {
         $this->assertEquals( 2 , count($value) ); //On only 2 valid records
         foreach ($value as $k => $v) {
           $acc += (int) $v['hours'];
@@ -168,7 +168,7 @@ class ReportEndpointsTest extends WebTestCase
       $client = static::createClient();
       $client->request(
         'GET',
-        '/v1/report/montly/'.date('Y').'-01',
+        '/v1/report/monthly/'.date('Y').'-01',
         [],
         [],
         ['HTTP_X-TOKEN' => $this->session->getToken()]);
@@ -177,10 +177,10 @@ class ReportEndpointsTest extends WebTestCase
       $content = json_decode($response->getContent(), true);
       $this->assertArrayHasKey('month', $content);
       $this->assertEquals( date('Y').'-01', $content['month'] );
-      $this->assertArrayHasKey('report', $content);
-      $this->assertEquals( $this->fakePeople , count($content['report']) );
+      $this->assertArrayHasKey('reports', $content);
+      $this->assertEquals( $this->fakePeople , count($content['reports']) );
       $acc = 0;
-      foreach ($content['report'] as $key => $value) {
+      foreach ($content['reports'] as $key => $value) {
         $this->assertEquals( 2 , count($value) ); //On January 2 valid records
         foreach ($value as $k => $v) {
           $acc += (int) $v['hours'];

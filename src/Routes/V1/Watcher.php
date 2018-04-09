@@ -43,12 +43,12 @@ class Watcher
     }
 
     /*
-     * Create a montly report by domain
+     * Create a monthly report by domain
      * Only full checkIn / checkOut are counted
      *
      *  - yearmonth: YYYY-MM, default current month
      */
-    public function reportMontly(Application $app, $yearmonth){
+    public function reportMonthly(Application $app, $yearmonth){
             $user =  $app['app.user'];
             if( !$user ){
               $app->abort(403);
@@ -86,7 +86,7 @@ class Watcher
 
             return new JsonResponse([
               'month' => $yearmonth,
-              'report' => $data
+              'reports' => $data
             ], $status=200);
     }
 }

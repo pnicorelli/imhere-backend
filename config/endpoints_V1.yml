@@ -23,7 +23,7 @@ who:
   methods: ['GET']
   controller: ImHere\Routes\V1\Watcher::whoIsOnline
 reportPerMonth:
-  path: /report/montly/{yearmonth}
+  path: /report/monthly/{yearmonth}
   methods: ['GET']
-  controller: ImHere\Routes\V1\Watcher::reportMontly
+  controller: ImHere\Routes\V1\Watcher::reportMonthly
   defaults: { yearmonth: none }
