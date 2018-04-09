@@ -27,6 +27,7 @@ class Badger
             $res = $em->getRepository('\ImHere\Entities\Timetable')->createQueryBuilder('t')
                     ->select('count(t.id)')
                     ->andWhere('t.checkin > :current')
+                    ->andWhere('t.checkout IS NULL')
                     ->setParameter('current', $midnight)
                     ->getQuery()
                     ->execute();

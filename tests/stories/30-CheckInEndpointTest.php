@@ -67,6 +67,9 @@ class CheckInEndpointsTest extends WebTestCase
       $this->assertEquals($content['checkin'], $data->getCheckIn());
     }
 
+    /*
+     * I can checkin only 1 time... before make another one I need to checkout
+     */
     public function testCheckInShouldBeUniqueToday()
     {
       $client = static::createClient();
