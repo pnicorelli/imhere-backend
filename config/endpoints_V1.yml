@@ -6,6 +6,10 @@ profile:
   path: /profile
   methods: ['GET']
   controller: ImHere\Routes\V1\Profile::getProfile
+status:
+  path: /status
+  methods: ['GET']
+  controller: ImHere\Routes\V1\Badger::status
 checkin:
   path: /checkin
   methods: ['POST']

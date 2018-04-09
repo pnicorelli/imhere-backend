@@ -94,4 +94,47 @@ class Badger
               ], $status=400);
             }
     }
+
+
+        /*
+         * Check the current user status
+         */
+        public function status(Application $app)
+        {
+                $user =  $app['app.user'];
+                if( !$user ){
+                  $app->abort(403);
+                }
+
+                $midnight = new \DateTime();
+                $midnight->setTime(0,0);
+
+                $em = $app['orm.em'];
+                $res = $em->getRepository('\ImHere\Entities\Timetable')->createQueryBuilder('t')
+                        ->select('t.id')
+                        ->andWhere('t.checkin > :current')
+                        ->andWhere('t.user = :userId')
+                        ->setParameter('current', $midnight)
+                        ->setParameter('userId', $user->getId())
+                        ->orderBy('t.id', 'DESC')
+                        ->setMaxResults(1)
+                        ->getQuery()
+                        ->execute();
+                if( count($res) == 0 ){
+                  return new JsonResponse([
+                    'status' => 'out'
+                  ], $status=200);
+                } else {
+                  $tt = $em->find('\ImHere\Entities\Timetable', $res[ 0 ]['id']);
+
+                  $status = [
+                    'status' => 'in',
+                    'checkIn' => $tt->getCheckIn()
+                  ];
+                  if( $tt->getCheckOut() !== null){
+                    $status['status'] = 'out';
+                  }
+                  return new JsonResponse($status, $status=200);
+                }
+        }
 }

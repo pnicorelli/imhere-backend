@@ -37,21 +37,21 @@ Class App
           $app['app.token'] =  $token;
         });
 
-	/*
-	 * After each route
-	 */
-	$app->after(function (Request $request, Response $response) {
-		//Enable CORS
-		$response->headers->set('Access-Control-Allow-Origin', '*');
-		$response->headers->set('Access-Control-Allow-Headers', 'X-TOKEN');
-	});
+      	/*
+      	 * After each route
+      	 */
+      	$app->after(function (Request $request, Response $response) {
+      		//Enable CORS
+      		$response->headers->set('Access-Control-Allow-Origin', '*');
+      		$response->headers->set('Access-Control-Allow-Headers', 'X-TOKEN');
+      	});
 
-	/*
-	 * Preflight call
-	 */
-    	$app->options("{anything}", function () {
-	    return new \Symfony\Component\HttpFoundation\JsonResponse(null, 204);
-	})->assert("anything", ".*");
+      	/*
+      	 * Preflight call
+      	 */
+      	$app->options("{anything}", function () {
+      	    return new \Symfony\Component\HttpFoundation\JsonResponse(null, 204);
+      	})->assert("anything", ".*");
 
         /*
          * On Error
@@ -59,7 +59,9 @@ Class App
         $app->error(function (\Exception $e, Request $request, $code) {
             switch ($code) {
                 case 404:
+                case 405:
                     $message = 'resource not found.';
+                    $code = 404;
                     break;
                 case 403:
                     $message = 'user only resource';
@@ -71,7 +73,7 @@ Class App
             return new JsonResponse([
                 'status' => $code,
                 'message'=> $message
-                ]);
+              ], $status=$code);
         });
 
         /*
